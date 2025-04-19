@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <title>C++ コーディングガイドライン（ドラフト）</title>
+  <style>
+    body { font-family: sans-serif; line-height: 1.6; padding: 2em; max-width: 900px; margin: auto; background: #f9f9f9; }
+    h1, h2, h3 { color: #333; }
+    code { background: #eee; padding: 2px 4px; border-radius: 4px; }
+    pre { background: #eee; padding: 1em; border-radius: 4px; overflow-x: auto; }
+    table { width: 100%; border-collapse: collapse; margin-bottom: 2em; }
+    th, td { border: 1px solid #ccc; padding: 8px; text-align: left; }
+    th { background: #f0f0f0; }
+  </style>
+</head>
+<body>
+  <h1>C++ コーディングガイドライン（ドラフト）</h1>
+
+  <h2>✅ 作成の方針・考え方</h2>
+  <ul>
+    <li><strong>目的の明確化：</strong> 品質と一貫性を保ち、バグを減らす。</li>
+    <li><strong>現実的なルール：</strong> 実際に守れる、CIやツールとも連携可能。</li>
+    <li><strong>モダンC++をベース：</strong> C++17以降の機能を積極的に活用。</li>
+    <li><strong>改善可能な形で：</strong> フィードバックを受けて育てていけるように。</li>
+  </ul>
+
+  <h2>📘 コーディングガイドライン</h2>
+
+  <h3>1. ファイル構成と命名</h3>
+  <table>
+    <tr><th>ルール</th><th>内容</th></tr>
+    <tr><td>拡張子</td><td><code>.h</code> / <code>.cpp</code></td></tr>
+    <tr><td>命名</td><td>スネークケース（例: <code>foo_bar.h</code>）</td></tr>
+    <tr><td>インクルードガード</td><td><code>#pragma once</code></td></tr>
+    <tr><td>1クラス1ファイル</td><td>原則守る</td></tr>
+  </table>
+
+  <h3>2. 名前付け規則</h3>
+  <table>
+    <tr><th>要素</th><th>規則</th><th>例</th></tr>
+    <tr><td>クラス名</td><td>パスカルケース</td><td><code>MyClass</code></td></tr>
+    <tr><td>関数名</td><td>lowerCamelCase</td><td><code>calculateArea()</code></td></tr>
+    <tr><td>変数名</td><td>lowerCamelCase</td><td><code>userId</code></td></tr>
+    <tr><td>定数</td><td>全大文字＋アンダースコア</td><td><code>MAX_LENGTH</code></td></tr>
+    <tr><td>名前空間</td><td>スネークケース</td><td><code>file_utils</code></td></tr>
+  </table>
+
+  <h3>3. コーディングスタイル</h3>
+  <h4>3.1 インデントと改行</h4>
+  <pre><code>if (condition) {
+    doSomething();
+}</code></pre>
+
+  <h4>3.2 ブレースの位置</h4>
+  <pre><code>void func() {
+    // 処理
+}</code></pre>
+
+  <h3>4. モダンC++の活用</h3>
+  <table>
+    <tr><th>項目</th><th>ガイドライン</th></tr>
+    <tr><td><code>auto</code></td><td>型が明らかな場合に使用</td></tr>
+    <tr><td>スマートポインタ</td><td><code>unique_ptr</code>, <code>shared_ptr</code> を優先</td></tr>
+    <tr><td><code>nullptr</code></td><td><code>NULL</code>や<code>0</code>でなく<code>nullptr</code>を使用</td></tr>
+    <tr><td>範囲for</td><td>C++11の<code>for (auto& x : container)</code>形式を使う</td></tr>
+    <tr><td>explicit</td><td>1引数コンストラクタには<code>explicit</code></td></tr>
+  </table>
+
+  <h3>5. クラス設計・実装</h3>
+  <ul>
+    <li>メンバ変数には <code>m_</code> プレフィックス</li>
+    <li>アクセス修飾子は <code>private</code> を基本</li>
+    <li>コピー/ムーブ制御は <code>= delete</code> や <code>= default</code> で明示</li>
+  </ul>
+  <pre><code>class MyClass {
+public:
+    MyClass() = default;
+    MyClass(const MyClass&) = delete;
+
+private:
+    int m_value;
+};</code></pre>
+
+  <h3>6. エラーハンドリング</h3>
+  <ul>
+    <li><code>std::optional</code>, <code>std::variant</code> を活用</li>
+    <li><code>assert</code> はデバッグ用途のみ</li>
+  </ul>
+
+  <h3>7. コメント</h3>
+  <ul>
+    <li>「なぜこのコードか」を説明するコメント</li>
+    <li>Doxygenスタイルを推奨</li>
+  </ul>
+  <pre><code>/// Calculates the area of a rectangle.
+/// @param width Width of the rectangle.
+/// @param height Height of the rectangle.
+/// @return Area as integer.
+int calculateArea(int width, int height);</code></pre>
+
+  <h3>8. テスト</h3>
+  <ul>
+    <li>GoogleTestなどのフレームワークを使う</li>
+    <li>テストコードにも同じ規約を適用</li>
+  </ul>
+
+  <h2>📎 参考にしたガイドライン</h2>
+  <ul>
+    <li><a href="https://google.github.io/styleguide/cppguide.html">Google C++ Style Guide</a></li>
+    <li><a href="https://llvm.org/docs/CodingStandards.html">LLVM Coding Standards</a></li>
+    <li><a href="https://isocpp.github.io/CppCoreGuidelines/CppCoreGuidelines">C++ Core Guidelines</a></li>
+    <li><a href="https://www.misra.org.uk">MISRA C++ Guidelines</a></li>
+  </ul>
+
+</body>
+</html>
